@@ -8,5 +8,10 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book extends ApplicationEntity<Book> {
+    private String title;
+    private Integer pages;
+    private String author;
+    private String summary;
+    private User user;
 }
