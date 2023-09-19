@@ -3,9 +3,7 @@ package com.example.library.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @EqualsAndHashCode(callSuper = true)
@@ -29,6 +27,7 @@ public class Book extends ApplicationEntity<Book> {
     @NotBlank(message = "Summary can not be blank")
     private String summary;
 
-    @Column(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
     private User user;
 }
