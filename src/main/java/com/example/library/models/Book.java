@@ -32,4 +32,12 @@ public class Book extends ApplicationEntity<Book> {
     @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     private User user;
+
+    @Override
+    public void update(Book payload) {
+        setTitle(payload.getTitle());
+        setSummary(payload.getSummary());
+        setPages(payload.getPages());
+        setAuthor(payload.getAuthor());
+    }
 }

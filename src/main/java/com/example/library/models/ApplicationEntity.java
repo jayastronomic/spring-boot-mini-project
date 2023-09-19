@@ -34,4 +34,6 @@ public abstract class ApplicationEntity<T> {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     protected Date updatedAt;
+
+    public abstract void update(T payload);
 }

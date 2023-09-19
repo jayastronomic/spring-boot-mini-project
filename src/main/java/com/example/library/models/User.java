@@ -44,6 +44,12 @@ public final class User extends ApplicationEntity<User> {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Book> books;
 
+
+    @Override
+    public void update(User payload) {
+        setUsername(payload.getUsername());
+    }
+
     public Book findBookById(UUID id){
         return books
                 .stream()
