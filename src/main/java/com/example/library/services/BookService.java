@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
-public class BookService {
+public class BookService extends ApplicationService {
     Logger logger = Logger.getLogger(BookService.class.getName());
     private final BookRepository bookRepository;
 
