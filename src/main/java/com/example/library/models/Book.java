@@ -25,7 +25,7 @@ public class Book extends ApplicationEntity<Book> {
     @NotBlank(message = "Author can not be blank")
     private String author;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     @NotBlank(message = "Summary can not be blank")
     private String summary;
 
