@@ -36,5 +36,6 @@ public class BookController {
     public ResponseEntity<APIResponse> update(@Valid @RequestBody Book book ){
         return bookService.updateBook(book);
     }
+
 }
 

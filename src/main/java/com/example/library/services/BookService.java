@@ -44,6 +44,17 @@ public class BookService extends ApplicationService {
         return bookNotFound(bookUpdates.getId());
     }
 
+    public ResponseEntity<APIResponse> deleteBook(UUID id){
+        Book book = currentUser().findBookById(id);
+        if(book != null) {
+            bookRepository.deleteById(id);
+            HashMap<String, String> response = new HashMap<>();
+            response.put("message", "Book successfully deleted");
+            return ResponseEntity.ok(new APIResponse(response));
+        }
+        return bookNotFound(id);
+    }
+
 
     private ResponseEntity<APIResponse> bookNotFound(UUID id){
         Map<String,String> errors = new HashMap<>();
@@ -52,5 +63,4 @@ public class BookService extends ApplicationService {
                 .status(HttpStatus.NOT_FOUND)
                 .body(new APIResponse(errors));
     }
-
 }
