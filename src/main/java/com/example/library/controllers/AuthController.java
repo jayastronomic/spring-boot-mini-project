@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -35,16 +33,6 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<APIResponse> login(@RequestBody User payload) {
-        String jwtToken = authService.login(payload).orElse(null);
-        if (jwtToken != null) {
-            return ResponseEntity.ok(new APIResponse(jwtToken));
-        } else {
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("message", "invalid email/password");
-
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(new APIResponse(responseBody));
-        }
+        return authService.login(payload);
     }
 }

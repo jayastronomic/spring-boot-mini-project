@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ public class JWTUtils {
     private int jwtExpMS;
 
     public String generateJwtToken(AuthUserDetails authUserDetails){
-        return Jwts.builder()
+         return Jwts.builder()
                 .setSubject((authUserDetails.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpMS))

@@ -15,12 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -47,19 +45,21 @@ public class AuthService {
             User newUser = userRepository.save(payload);
 
             // Generate a JWT token
-            String jwtToken = jwtUtils.generateJwtToken(new AuthUserDetails(newUser));
+             String jwt = jwtUtils.generateJwtToken(new AuthUserDetails(newUser));
 
 //             Create an HttpOnly cookie with the JWT token
-            Cookie cookie = new Cookie("jwtToken", jwtToken);
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(3600); // Set the cookie expiration time in seconds (e.g., 1 hour)
-            response.addCookie(cookie);
+//            Cookie cookie = new Cookie("jwtToken", jwtToken);
+//            cookie.setHttpOnly(true);
+//            cookie.setMaxAge(3600); // Set the cookie expiration time in seconds (e.g., 1 hour)
+//            cookie.setPath("/");
+//            response.addCookie(cookie);
 
 
             // Create a response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "User created successfully");
             responseBody.put("user", newUser);
+            responseBody.put("token", jwt);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -75,20 +75,23 @@ public class AuthService {
 
 
 
-    public Optional<String> login(User payload) {
-        logger.info(payload.getEmail());
-        logger.info(payload.getPassword());
+    public ResponseEntity<APIResponse> login(User payload) {
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword());
-        logger.info(String.valueOf(authenticationToken));
+        HashMap<String, Object> responseBody = new HashMap<>();
         try {
-
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
-            return Optional.of(jwtUtils.generateJwtToken(authUserDetails));
+            responseBody.put("token",  jwtUtils.generateJwtToken(authUserDetails));
+            responseBody.put("user", authUserDetails.user());
+             return ResponseEntity.ok(new APIResponse(responseBody));
         } catch (Exception e) {
-            return Optional.empty();
+            HashMap<String, String> errors = new HashMap<>();
+            errors.put("message", "invalid username/password");
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new APIResponse(errors));
         }
     }
 }
