@@ -31,4 +31,10 @@ public class BookController {
     public ResponseEntity<APIResponse> show(@PathVariable(value = "id") UUID id){
         return bookService.readBook(id);
     }
+
+    @PostMapping("/user_book/update")
+    public ResponseEntity<APIResponse> update(@Valid @RequestBody Book book ){
+        return bookService.updateBook(book);
+    }
 }
+

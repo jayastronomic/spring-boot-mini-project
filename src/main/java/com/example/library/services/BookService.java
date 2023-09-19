@@ -35,19 +35,19 @@ public class BookService extends ApplicationService {
       return bookNotFound(id);
     }
 
-    public ResponseEntity<APIResponse> updateBook(Book updatedBook){
-        Book book = currentUser().findBookById(updatedBook.getId());
+    public ResponseEntity<APIResponse> updateBook(Book bookUpdates){
+        Book book = currentUser().findBookById(bookUpdates.getId());
         if(book != null){
-            book.update(updatedBook);
+            book.update(bookUpdates);
             return ResponseEntity.ok(new APIResponse(bookRepository.save(book)));
         }
-        return bookNotFound(updatedBook.getId());
+        return bookNotFound(bookUpdates.getId());
     }
 
 
     private ResponseEntity<APIResponse> bookNotFound(UUID id){
         Map<String,String> errors = new HashMap<>();
-        errors.put("message", "Book not found with ID = " +id);
+        errors.put("message", "Book not found with ID = " + id);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new APIResponse(errors));
