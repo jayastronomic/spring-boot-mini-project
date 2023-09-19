@@ -35,6 +35,15 @@ public class BookService extends ApplicationService {
       return bookNotFound(id);
     }
 
+    public ResponseEntity<APIResponse> updateBook(Book updatedBook){
+        Book book = currentUser().findBookById(updatedBook.getId());
+        if(book != null){
+            book.update(updatedBook);
+            return ResponseEntity.ok(new APIResponse(bookRepository.save(book)));
+        }
+        return bookNotFound(updatedBook.getId());
+    }
+
 
     private ResponseEntity<APIResponse> bookNotFound(UUID id){
         Map<String,String> errors = new HashMap<>();
