@@ -10,14 +10,17 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -30,16 +33,16 @@ public class AuthService {
 
     @Autowired
     public AuthService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
-                       JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager){
+                       JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
     }
 
-    public ResponseEntity<APIResponse> createIfNotExists(@Valid User payload, HttpServletResponse response){
+    public ResponseEntity<APIResponse> createIfNotExists(@Valid User payload, HttpServletResponse response) {
         boolean exists = userRepository.existsByEmail(payload.getEmail());
-        if(!exists){
+        if (!exists) {
             payload.setPassword(passwordEncoder.encode(payload.getPassword()));
             User newUser = userRepository.save(payload);
 
@@ -68,5 +71,24 @@ public class AuthService {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new APIResponse(errors));
+    }
+
+
+
+    public Optional<String> login(User payload) {
+        logger.info(payload.getEmail());
+        logger.info(payload.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new
+                UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword());
+        logger.info(String.valueOf(authenticationToken));
+        try {
+
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
+            return Optional.of(jwtUtils.generateJwtToken(authUserDetails));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

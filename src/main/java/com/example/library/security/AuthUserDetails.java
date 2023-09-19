@@ -5,21 +5,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 public record AuthUserDetails(User user)  implements UserDetails  {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getEmail();
     }
 
     @Override
