@@ -39,4 +39,23 @@ public class JWTUtils {
     }
 
 
+    public boolean validateJWT(String token){
+       try {
+           Jwts.parser()
+                   .setSigningKey(jwtSecret)
+                   .parseClaimsJws(token);
+           return true;
+       } catch (SecurityException e) {
+           logger.log(Level.SEVERE, "Invalid JWT signature: {}", e.getMessage());
+       } catch (MalformedJwtException e) {
+           logger.log(Level.SEVERE, "Invalid JWT token: {}", e.getMessage());
+       } catch (ExpiredJwtException e) {
+           logger.log(Level.SEVERE, "JWT token is expired: {}", e.getMessage());
+       } catch (UnsupportedJwtException e) {
+           logger.log(Level.SEVERE, "JWT token is unsupported: {}", e.getMessage());
+       } catch (IllegalArgumentException e) {
+           logger.log(Level.SEVERE, "JWT claims string is empty: {}", e.getMessage());
+       }
+        return false;
+    }
 }
