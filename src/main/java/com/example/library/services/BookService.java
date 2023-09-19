@@ -55,7 +55,6 @@ public class BookService extends ApplicationService {
         return bookNotFound(id);
     }
 
-
     private ResponseEntity<APIResponse> bookNotFound(UUID id){
         Map<String,String> errors = new HashMap<>();
         errors.put("message", "Book not found with ID = " + id);
