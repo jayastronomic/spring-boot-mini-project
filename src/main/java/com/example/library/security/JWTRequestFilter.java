@@ -19,15 +19,18 @@ import java.util.logging.Logger;
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     Logger logger = Logger.getLogger(JWTRequestFilter.class.getName());
-    private final AuthUserDetailsService authUserDetailsService;
-    private final JWTUtils jwtUtils;
+    private AuthUserDetailsService authUserDetailsService;
+    private JWTUtils jwtUtils;
 
     @Autowired
-    public JWTRequestFilter(AuthUserDetailsService authUserDetailsService, JWTUtils jwtUtils) {
+    public void setAuthUserDetailsService(AuthUserDetailsService authUserDetailsService) {
         this.authUserDetailsService = authUserDetailsService;
-        this.jwtUtils = jwtUtils;
     }
 
+    @Autowired
+    public void setJwtUtils(JWTUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
     private String parseJWT(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasLength(headerAuth) && headerAuth.startsWith("Bearer")) {
