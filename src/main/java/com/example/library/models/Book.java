@@ -4,7 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,8 +17,8 @@ public class Book extends ApplicationEntity<Book> {
     @NotBlank(message = "Title can not be blank")
     private String title;
 
-    @Column(nullable = false)
-    @NotBlank(message = "Pages can not be blank")
+    @NotNull(message = "Pages cannot be null")
+    @Min(value = 1, message = "Pages should be greater than or equal to 1")
     private Integer pages;
 
     @Column(nullable = false)
