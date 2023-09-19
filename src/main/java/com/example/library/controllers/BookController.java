@@ -32,9 +32,14 @@ public class BookController {
         return bookService.readBook(id);
     }
 
-    @PostMapping("/user_book/update")
+    @PutMapping("/user_book/update")
     public ResponseEntity<APIResponse> update(@Valid @RequestBody Book book ){
         return bookService.updateBook(book);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<APIResponse> delete(@PathVariable(value = "id") UUID id){
+        return bookService.deleteBook(id);
     }
 
 }
