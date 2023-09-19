@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<APIResponse> login(@RequestBody User payload) {
-        return authService.login(payload);
+    public ResponseEntity<APIResponse> login(@RequestBody User payload, HttpServletResponse response) {
+        return authService.login(payload, response);
     }
 }

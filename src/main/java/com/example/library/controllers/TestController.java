@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class TestController {
 
     @GetMapping
-    public ResponseEntity<APIResponse> test(@CookieValue(name = "jwtToken", required = false) String jwtToken){
+    public ResponseEntity<APIResponse> test(){
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "active");
         return ResponseEntity.ok(new APIResponse(response));

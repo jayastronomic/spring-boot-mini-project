@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -48,18 +50,12 @@ public class AuthService {
              String jwt = jwtUtils.generateJwtToken(new AuthUserDetails(newUser));
 
 //             Create an HttpOnly cookie with the JWT token
-//            Cookie cookie = new Cookie("jwtToken", jwtToken);
-//            cookie.setHttpOnly(true);
-//            cookie.setMaxAge(3600); // Set the cookie expiration time in seconds (e.g., 1 hour)
-//            cookie.setPath("/");
-//            response.addCookie(cookie);
-
+            response.addCookie(generateHTTPOnlyCookie(jwt));
 
             // Create a response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "User created successfully");
             responseBody.put("user", newUser);
-            responseBody.put("token", jwt);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -75,7 +71,7 @@ public class AuthService {
 
 
 
-    public ResponseEntity<APIResponse> login(User payload) {
+    public ResponseEntity<APIResponse> login(User payload, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword());
         HashMap<String, Object> responseBody = new HashMap<>();
@@ -83,8 +79,10 @@ public class AuthService {
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             AuthUserDetails authUserDetails = (AuthUserDetails) authentication.getPrincipal();
-            responseBody.put("token",  jwtUtils.generateJwtToken(authUserDetails));
+            String jwt = jwtUtils.generateJwtToken(authUserDetails);
+            responseBody.put("message", "Logged in successfully");
             responseBody.put("user", authUserDetails.user());
+            response.addCookie(generateHTTPOnlyCookie(jwt));
              return ResponseEntity.ok(new APIResponse(responseBody));
         } catch (Exception e) {
             HashMap<String, String> errors = new HashMap<>();
@@ -93,5 +91,14 @@ public class AuthService {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(new APIResponse(errors));
         }
+    }
+
+
+    private Cookie generateHTTPOnlyCookie(String jwt){
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(3600); // Set the cookie expiration time in seconds (e.g., 1 hour)
+        cookie.setPath("/");
+        return cookie;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,12 +34,19 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         this.jwtUtils = jwtUtils;
     }
     private String parseJWT(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasLength(headerAuth) && headerAuth.startsWith("Bearer")) {
-            return headerAuth.substring(7);
+        // Get all cookies from the request
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                // Check if the cookie is the one containing JWT token
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
         }
 
-        logger.info("No header");
+        logger.info("No JWT cookie found");
         return null;
     }
 
