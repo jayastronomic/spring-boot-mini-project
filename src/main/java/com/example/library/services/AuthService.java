@@ -4,6 +4,7 @@ import com.example.library.models.User;
 import com.example.library.repositories.UserRepository;
 import com.example.library.security.AuthUserDetails;
 import com.example.library.security.JWTUtils;
+import com.example.library.utils.APIResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public ResponseEntity<?> createIfNotExists(@Valid User payload, HttpServletResponse response){
+    public ResponseEntity<APIResponse> createIfNotExists(@Valid User payload, HttpServletResponse response){
         boolean exists = userRepository.existsByEmail(payload.getEmail());
         if(!exists){
             payload.setPassword(passwordEncoder.encode(payload.getPassword()));
@@ -59,13 +60,13 @@ public class AuthService {
 
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(responseBody);
+                    .body(new APIResponse(responseBody));
 
         }
         Map<String, String> errors = new HashMap<>();
         errors.put("message", "User already exists with email: " + payload.getEmail());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(errors);
+                .body(new APIResponse(errors));
     }
 }
