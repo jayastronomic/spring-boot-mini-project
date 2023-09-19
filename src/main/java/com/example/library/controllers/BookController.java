@@ -46,6 +46,5 @@ public class BookController {
     public ResponseEntity<APIResponse> delete(@PathVariable(value = "id") UUID id){
         return bookService.deleteBook(id);
     }
-
 }
 
