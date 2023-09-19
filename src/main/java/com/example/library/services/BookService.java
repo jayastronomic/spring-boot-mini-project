@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -24,5 +25,4 @@ public class BookService extends ApplicationService {
         return ResponseEntity
                 .ok(new APIResponse(bookRepository.save(book)));
     }
-
 }

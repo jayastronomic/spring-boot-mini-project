@@ -13,6 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -42,4 +43,12 @@ public final class User extends ApplicationEntity<User> {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Book> books;
+
+    public Book findBookById(UUID id){
+        return books
+                .stream()
+                .filter(book -> book.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 }
