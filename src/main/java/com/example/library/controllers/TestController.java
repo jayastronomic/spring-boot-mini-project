@@ -9,10 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
+/**
+ * The TestController class provides endpoints for testing and demonstration purposes in the library application.
+ */
 @RestController
 @RequestMapping("/api/v1/test")
 public class TestController {
 
+    /**
+     * Handles a GET request to the "/api/v1/test" endpoint.
+     *
+     * @return ResponseEntity containing a JSON response indicating the status as "active."
+     */
     @GetMapping
     public ResponseEntity<APIResponse> test(){
         HashMap<String, String> response = new HashMap<>();
