@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * The BookRepository interface is responsible for defining database operations
+ * for the Book entity, such as CRUD (Create, Read, Update, Delete) operations.
+ */
 @Repository
 public interface BookRepository extends JpaRepository<Book, UUID> {
 }
