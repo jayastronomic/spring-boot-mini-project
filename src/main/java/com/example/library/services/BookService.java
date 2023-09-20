@@ -24,7 +24,7 @@ public class BookService extends ApplicationService {
     }
 
     public ResponseEntity<APIResponse> allbooks(){
-        return ResponseEntity.ok(new APIResponse(bookRepository.findAll()));
+        return ResponseEntity.ok(new APIResponse(currentUser().getBooks()));
     }
 
     public ResponseEntity<APIResponse> createBook(Book book){

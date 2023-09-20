@@ -27,6 +27,11 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @GetMapping
+    public ResponseEntity<APIResponse> index(){
+        return bookService.allbooks();
+    }
+
     @PostMapping
     public ResponseEntity<APIResponse> create(@Valid @RequestBody Book book){
         return bookService.createBook(book);
