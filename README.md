@@ -44,7 +44,7 @@ This Spring Boot Mini Project showcases the development of a monolithic backend 
 
 ## Installation Instructions
 
-1. Clone the repository: `git clone <repository_url>`
+1. Clone the repository: `git clone https://github.com/jayastronomic/spring-boot-mini-project.git`
 2. Navigate to the project directory: `cd spring-boot-mini-project`
 3. Build and run the project using Maven: `./mvnw spring-boot:run`
 
