@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/v1/user_books")
 @Validated
 public class BookController {
     private final BookService bookService;
@@ -37,17 +37,17 @@ public class BookController {
         return bookService.createBook(book);
     }
 
-    @GetMapping("/user_book/{id}")
+    @GetMapping("/user_books/{id}")
     public ResponseEntity<APIResponse> show(@PathVariable(value = "id") UUID id){
         return bookService.readBook(id);
     }
 
-    @PutMapping("/user_book/update")
+    @PutMapping("/user_books/update")
     public ResponseEntity<APIResponse> update(@Valid @RequestBody Book book ){
         return bookService.updateBook(book);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user_books/{id}")
     public ResponseEntity<APIResponse> delete(@PathVariable(value = "id") UUID id){
         return bookService.deleteBook(id);
     }
