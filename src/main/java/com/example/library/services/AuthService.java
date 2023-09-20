@@ -69,8 +69,6 @@ public class AuthService {
                 .body(new APIResponse(errors));
     }
 
-
-
     public ResponseEntity<APIResponse> login(User payload, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword());
