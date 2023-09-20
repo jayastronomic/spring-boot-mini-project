@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+/**
+ * The JWTRequestFilter class is responsible for filtering incoming HTTP requests and authenticating users
+ * based on the JWT token present in the request's cookies.
+ */
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
     Logger logger = Logger.getLogger(JWTRequestFilter.class.getName());
@@ -33,6 +37,13 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     public void setJwtUtils(JWTUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
     }
+
+    /**
+     * Parses the JWT token from the request's cookies.
+     *
+     * @param request The HttpServletRequest containing the cookies.
+     * @return The JWT token if found in the cookies, or null if not found.
+     */
     private String parseJWT(HttpServletRequest request) {
         // Get all cookies from the request
         Cookie[] cookies = request.getCookies();
@@ -49,6 +60,16 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         logger.info("No JWT cookie found");
         return null;
     }
+
+    /**
+     * Filters incoming HTTP requests, validates the JWT token, and sets the user's authentication details if valid.
+     *
+     * @param request     The HttpServletRequest to filter.
+     * @param response    The HttpServletResponse.
+     * @param filterChain The FilterChain to continue processing the request.
+     * @throws ServletException If an error occurs during servlet processing.
+     * @throws IOException      If an I/O error occurs.
+     */
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
