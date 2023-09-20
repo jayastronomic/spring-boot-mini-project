@@ -12,7 +12,7 @@
 
 - As a user, I want to add books to my collection, so that I can keep track of the books I own.
     - **Acceptance Criteria:**
-        - Users can add books to their collection by providing book details such as title, author, and publication year.
+        - Users can add books to their collection by providing book details such as title, author, and summary.
         - Users can edit or delete books from their collection.
 
 - As a user, I want to see a list of all the books in my collection, so that I can easily browse through them.
@@ -28,7 +28,7 @@
 - As a user, I want to categorize my books by genres, so that I can organize them more effectively.
     - **Acceptance Criteria:**
         - Users can assign one or more genres to each book in their collection.
-        - Users can view books categorized by genre.
+        - Users can view books categorized by genre. 
 
 ## Book Stories
 
