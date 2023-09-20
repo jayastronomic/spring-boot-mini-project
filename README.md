@@ -39,7 +39,7 @@ This Spring Boot Mini Project showcases the development of a monolithic backend 
 
 ## Entity-Relationship Diagram (ERD)
 
-[Link to User Stories](Library%20ERD.png)
+[Link to ERD](Library%20ERD.png)
 
 
 ## Installation Instructions
