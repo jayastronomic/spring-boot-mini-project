@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * The AuthService class provides authentication and user-related services in the library application.
+ */
 @Service
 public class AuthService {
     Logger logger = Logger.getLogger(AuthService.class.getName());
@@ -40,6 +43,14 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Creates a new user if a user with the same email does not already exist.
+     *
+     * @param payload  The user data to create.
+     * @param response The HttpServletResponse to set an HttpOnly cookie with the JWT token.
+     * @return ResponseEntity containing a success message and user details if created successfully,
+     * or an error message if the user already exists.
+     */
     public ResponseEntity<APIResponse> createIfNotExists(@Valid User payload, HttpServletResponse response) {
         boolean exists = userRepository.existsByEmail(payload.getEmail());
         if (!exists) {
@@ -69,6 +80,14 @@ public class AuthService {
                 .body(new APIResponse(errors));
     }
 
+    /**
+     * Handles user login by validating the provided username and password.
+     *
+     * @param payload  The user data containing email and password for login.
+     * @param response The HttpServletResponse to set an HttpOnly cookie with the JWT token.
+     * @return ResponseEntity containing a success message and user details if logged in successfully,
+     * or an error message if the login fails.
+     */
     public ResponseEntity<APIResponse> login(User payload, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new
                 UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword());
@@ -91,7 +110,12 @@ public class AuthService {
         }
     }
 
-
+    /**
+     * Generates an HttpOnly cookie containing the JWT token.
+     *
+     * @param jwt The JWT token to set in the cookie.
+     * @return The HttpOnly cookie.
+     */
     private Cookie generateHTTPOnlyCookie(String jwt){
         Cookie cookie = new Cookie("jwt", jwt);
         cookie.setHttpOnly(true);
