@@ -12,9 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The GlobalExceptionHandler class handles global exceptions and provides custom error responses
+ * for various exceptions that may occur during API requests in the library application.
+ */
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
+    /**
+     * Handles validation exceptions triggered by invalid request data.
+     *
+     * @param ex The MethodArgumentNotValidException instance.
+     * @return ResponseEntity containing error details in the response body.
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
