@@ -23,7 +23,7 @@ public class BookService extends ApplicationService {
         this.bookRepository = bookRepository;
     }
 
-    public ResponseEntity<APIResponse> allbooks(){
+    public ResponseEntity<APIResponse> allBooks(){
         return ResponseEntity.ok(new APIResponse(currentUser().getBooks()));
     }
 

@@ -29,7 +29,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<APIResponse> index(){
-        return bookService.allbooks();
+        return bookService.allBooks();
     }
 
     @PostMapping
